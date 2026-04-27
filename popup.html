@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FairStream</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      width: 320px;
+      min-height: 400px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+      color: white;
+      padding: 20px;
+    }
+    
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid #334155;
+    }
+    
+    .logo {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, #8b5cf6, #06b6d4);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+    }
+    
+    .title h1 {
+      font-size: 18px;
+      font-weight: 600;
+    }
+    
+    .title p {
+      font-size: 12px;
+      color: #94a3b8;
+    }
+    
+    .stats {
+      background: #1e293b;
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+    
+    .stat-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    
+    .stat-row:last-child {
+      margin-bottom: 0;
+    }
+    
+    .stat-label {
+      font-size: 13px;
+      color: #94a3b8;
+    }
+    
+    .stat-value {
+      font-size: 14px;
+      font-weight: 600;
+    }
+    
+    .stat-value.good { color: #10b981; }
+    .stat-value.warning { color: #f59e0b; }
+    .stat-value.danger { color: #ef4444; }
+    
+    .score-circle {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: conic-gradient(#10b981 var(--score), #334155 0);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 16px;
+    }
+    
+    .score-inner {
+      width: 60px;
+      height: 60px;
+      background: #1e293b;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      font-weight: 700;
+    }
+    
+    .settings {
+      background: #1e293b;
+      border-radius: 12px;
+      padding: 16px;
+    }
+    
+    .setting-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    
+    .setting-label {
+      font-size: 13px;
+      color: #e2e8f0;
+    }
+    
+    .toggle {
+      width: 44px;
+      height: 24px;
+      background: #334155;
+      border-radius: 12px;
+      position: relative;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    
+    .toggle.active {
+      background: #8b5cf6;
+    }
+    
+    .toggle::after {
+      content: '';
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: white;
+      border-radius: 50%;
+      top: 2px;
+      left: 2px;
+      transition: transform 0.2s;
+    }
+    
+    .toggle.active::after {
+      transform: translateX(20px);
+    }
+    
+    .slider-container {
+      margin-bottom: 16px;
+    }
+    
+    .slider-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: #94a3b8;
+      margin-bottom: 8px;
+    }
+    
+    input[type="range"] {
+      width: 100%;
+      height: 6px;
+      -webkit-appearance: none;
+      background: #334155;
+      border-radius: 3px;
+      outline: none;
+    }
+    
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 16px;
+      height: 16px;
+      background: #8b5cf6;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+    
+    .btn {
+      width: 100%;
+      padding: 12px;
+      background: linear-gradient(135deg, #8b5cf6, #06b6d4);
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+    
+    .btn:hover {
+      opacity: 0.9;
+    }
+    
+    .status {
+      text-align: center;
+      padding: 8px;
+      border-radius: 8px;
+      font-size: 12px;
+      margin-bottom: 16px;
+    }
+    
+    .status.good {
+      background: rgba(16, 185, 129, 0.2);
+      color: #10b981;
+    }
+    
+    .status.warning {
+      background: rgba(245, 158, 11, 0.2);
+      color: #f59e0b;
+    }
+    
+    .status.danger {
+      background: rgba(239, 68, 68, 0.2);
+      color: #ef4444;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="logo">🛡️</div>
+    <div class="title">
+      <h1>FairStream</h1>
+      <p>Anti-Polarization Extension</p>
+    </div>
+  </div>
+  
+  <div class="status" id="status">Loading...</div>
+  
+  <div class="score-circle" id="score-circle">
+    <div class="score-inner" id="score-value">--</div>
+  </div>
+  
+  <div class="stats">
+    <div class="stat-row">
+      <span class="stat-label">Articles Viewed</span>
+      <span class="stat-value" id="total-articles">0</span>
+    </div>
+    <div class="stat-row">
+      <span class="stat-label">Left-Leaning</span>
+      <span class="stat-value" id="left-count">0</span>
+    </div>
+    <div class="stat-row">
+      <span class="stat-label">Right-Leaning</span>
+      <span class="stat-value" id="right-count">0</span>
+    </div>
+    <div class="stat-row">
+      <span class="stat-label">Neutral</span>
+      <span class="stat-value" id="center-count">0</span>
+    </div>
+  </div>
+  
+  <div class="settings">
+    <div class="setting-row">
+      <span class="setting-label">Enable FairStream</span>
+      <div class="toggle active" id="toggle-enabled"></div>
+    </div>
+    <div class="setting-row">
+      <span class="setting-label">Show Indicators</span>
+      <div class="toggle active" id="toggle-indicators"></div>
+    </div>
+  </div>
+  
+  <button class="btn" id="open-dashboard">Open FairStream Dashboard</button>
+  
+  <script src="popup.js"></script>
+</body>
+</html>

@@ -1,4 +1,3 @@
-# fair.stream
-The Anti-Polarization Algorithm for Social Media Education
-website URL
-https://fairstream.youware.app/
+# API Directory
+
+This is an API reserved directory. 
